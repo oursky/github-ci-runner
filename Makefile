@@ -6,11 +6,11 @@ TAG?=latest
 build:
 	docker buildx build . --platform linux/amd64 \
 		-t ${IMAGE_REPO}:latest \
-		-t ${IMAGE_REPO}:sha-$$(git rev-parse HEAD --short=10)
+		-t ${IMAGE_REPO}:sha-$$(git rev-parse --short=10 HEAD)
 	docker images ${IMAGE_REPO}:latest
 
 .PHONY: push
 push:
 	docker tag ${IMAGE_REPO}:latest ${IMAGE_REPO}:${TAG}
 	docker push ${IMAGE_REPO}:${TAG}
-	docker push ${IMAGE_REPO}:sha-$$(git rev-parse HEAD --short=10)
+	docker push ${IMAGE_REPO}:sha-$$(git rev-parse --short=10 HEAD)
