@@ -2,7 +2,7 @@ name: Build Runner
 
 on:
   push:
-    branches: [master]
+    branches: [master, dev]
   pull_request:
     branches: [master]
 
@@ -22,4 +22,5 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: |-
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          make push TAG=latest
+          test "$GITHUB_REF_NAME" = master && make push TAG=latest
+          make push TAG=$GITHUB_REF_NAME
