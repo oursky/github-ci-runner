@@ -8,6 +8,7 @@ build:
 		-t ${IMAGE_REPO}:latest \
 		-t ${IMAGE_REPO}:sha-$$(git rev-parse --short=10 HEAD)
 	docker images ${IMAGE_REPO}:latest
+	docker history ${IMAGE_REPO}:latest
 
 .PHONY: push
 push:
