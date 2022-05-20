@@ -75,7 +75,9 @@ if [[ "${UNITTEST:-}" == '' ]]; then
   shopt -u dotglob
 fi
 
-(cd ./setup && ./setup.sh)
+pushd ./setup
+source ./setup.sh
+popd
 
 cd ${RUNNER_HOME}
 # past that point, it's all relative pathes from /runner
