@@ -8,7 +8,7 @@ RUN --mount=target=/build,source=/build,rw=true cd /build && ./setup.sh
 USER runner
 ENV HOME=/home/runner
 
-COPY --chown=runner: --link ci/ /ci/
+COPY --chown=1000: --link ci/ /ci/
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 WORKDIR "/ci"

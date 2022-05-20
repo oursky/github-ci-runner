@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 set -euxo pipefail
 
-sudo apt-fast install dumb-init
+apt-fast install dumb-init
 
 RUNNER_VERSION=2.291.1
 
@@ -16,6 +16,7 @@ echo "AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache" | tee -a /etc/environment
 
 adduser --disabled-password --gecos "" --uid 1000 runner
 usermod -aG sudo runner
+usermod -aG sudo root
 echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers
 
 mkdir /actions-runner
