@@ -139,12 +139,6 @@ cat .runner
 #     -H "Authorization: bearer ${GITHUB_TOKEN}"
 #     https://api.github.com/repos/USER/REPO/actions/runners/171
 
-if [ -z "${UNITTEST:-}" ]; then
-  mkdir -p ./externals
-  # Hack due to the DinD volumes
-  mv ./externalstmp/* ./externals/
-fi
-
 args=()
 if [ "${RUNNER_FEATURE_FLAG_EPHEMERAL:-}" != "true" -a "${RUNNER_EPHEMERAL}" == "true" ]; then
   args+=(--once)
