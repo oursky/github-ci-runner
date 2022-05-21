@@ -4,9 +4,8 @@ TAG?=latest
 
 .PHONY: build
 build:
-	mkdir -p dist.local
-	docker buildx build . -t "${IMAGE_REPO}:build"
-	docker images
+	docker buildx build . -t "${IMAGE_REPO}:build" ${BUILDX_ARGS}
+	docker images "${IMAGE_REPO}"
 
 .PHONY: optimize
 optimize:
@@ -21,7 +20,6 @@ optimize:
 		"${IMAGE_REPO}:build-opt"
 	nerdctl image tag "${IMAGE_REPO}:build-opt" "${IMAGE_REPO}:build"
 	nerdctl image save -o "${IMAGE_TAR}" "${IMAGE_REPO}:build"
-	ls -lh dist.local
 
 .PHONY: push
 push:

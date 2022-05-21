@@ -13,10 +13,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: ./.github/actions/export-runtime
 
       - name: Build Image
         run: |
-          make build
+          docker buildx create --name builder --use --driver docker-container
+          make build BUILDX_ARGS="--cache-from=type=gha --cache-to=type=gha,mode=max --load"
 
       - name: Push Image
         if: ${{ github.event_name == 'push' }}

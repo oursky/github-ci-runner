@@ -1,0 +1,6 @@
+name: Export runtime variables
+description: Export runtime variables for image caching
+
+runs:
+  using: 'node16'
+  main: 'index.js'
