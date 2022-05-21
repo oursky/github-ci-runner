@@ -1,15 +1,12 @@
 IMAGE_REPO=ghcr.io/oursky/github-ci-runner
-GIT_COMMIT=$(shell git rev-parse HEAD)
-IMAGE_TAR?=dist.local/image.tar
+GIT_COMMIT=$(shell git rev-parse HEAD)\
 TAG?=latest
 
 .PHONY: build
 build:
 	mkdir -p dist.local
-	docker buildx build . \
-		-o dest="${IMAGE_TAR}",type=oci,compression=uncompressed \
-		-t "${IMAGE_REPO}:build"
-	ls -lh dist.local
+	docker buildx build . -t "${IMAGE_REPO}:build"
+	docker images
 
 .PHONY: optimize
 optimize:
@@ -28,8 +25,7 @@ optimize:
 
 .PHONY: push
 push:
-	nerdctl image load -i "${IMAGE_TAR}"
-	nerdctl image tag "${IMAGE_REPO}:build" "${IMAGE_REPO}:${TAG}"
-	nerdctl image tag "${IMAGE_REPO}:build" "${IMAGE_REPO}:sha-$$(git rev-parse --short=10 HEAD)"
-	nerdctl push "${IMAGE_REPO}:${TAG}"
-	nerdctl push "${IMAGE_REPO}:sha-$$(git rev-parse --short=10 HEAD)"
+	docker image tag "${IMAGE_REPO}:build" "${IMAGE_REPO}:${TAG}"
+	docker image tag "${IMAGE_REPO}:build" "${IMAGE_REPO}:sha-$$(git rev-parse --short=10 HEAD)"
+	docker push "${IMAGE_REPO}:${TAG}"
+	docker push "${IMAGE_REPO}:sha-$$(git rev-parse --short=10 HEAD)"

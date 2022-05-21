@@ -14,28 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup
-        run: |
-          curl -L 'https://github.com/containerd/stargz-snapshotter/releases/download/v0.11.4/stargz-snapshotter-v0.11.4-linux-amd64.tar.gz' | tar xvzf - ctr-remote
-          curl -L 'https://github.com/containerd/nerdctl/releases/download/v0.20.0/nerdctl-0.20.0-linux-amd64.tar.gz' | tar xvzf - nerdctl
-          sudo mv ctr-remote /usr/local/bin/
-          sudo mv nerdctl /usr/local/bin/
-          echo 'CONTAINERD_ADDRESS=/var/run/docker/containerd/containerd.sock' >> $GITHUB_ENV
-
       - name: Build Image
         run: |
-          docker buildx create --name builder --use --buildkitd-flags '--oci-worker-snapshotter=stargz'
           make build
-      
-      - name: Optimize Image
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          sudo make optimize
 
       - name: Push Image
         if: ${{ github.event_name == 'push' }}
         run: |-
-          echo ${{ secrets.GITHUB_TOKEN }} | sudo nerdctl login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           test "$GITHUB_REF_NAME" = master && \
-            sudo make push TAG=latest || \
-            sudo make push TAG="$GITHUB_REF_NAME"
+            make push TAG=latest || \
+            make push TAG="$GITHUB_REF_NAME"
