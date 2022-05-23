@@ -41,6 +41,7 @@ RUN --mount=target=/build/script.sh,source=/build/system/packages/01-base.sh /bu
 RUN --mount=target=/build/script.sh,source=/build/system/packages/02-git.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/packages/03-docker.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/packages/04-browsers.sh /build/script.sh
+RUN --mount=target=/build/script.sh,source=/build/system/packages/05-zstd.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/setup-runner.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/cleanup.sh /build/script.sh
 
