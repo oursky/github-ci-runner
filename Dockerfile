@@ -4,7 +4,7 @@
 FROM ubuntu:22.04 AS tools-base
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y curl git sudo make
+RUN apt-get update && apt-get install -y curl git sudo make unzip
 RUN adduser --disabled-password --gecos "" --uid 1000 runner && \
     usermod -aG sudo runner && \
     echo "runner ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/runner && \
@@ -21,10 +21,14 @@ RUN --mount=target=/build/script.sh,source=/build/tools/01-docker.sh /build/scri
 FROM tools-base AS tools-blackbox
 RUN --mount=target=/build/script.sh,source=/build/tools/02-blackbox.sh /build/script.sh
 
+FROM tools-base AS tools-android
+RUN --mount=target=/build/script.sh,source=/build/tools/03-android.sh /build/script.sh
+
 FROM tools-base AS tools
 COPY --chown=1000:100 --link ci/ /ci/
 COPY --from=tools-docker --link /ci/ /ci/
 COPY --from=tools-blackbox --link /ci/ /ci/
+COPY --from=tools-android --link /ci/ /ci/
 
 ### System
 FROM ubuntu:22.04 AS system
