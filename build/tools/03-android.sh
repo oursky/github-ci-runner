@@ -12,6 +12,7 @@ rm /tmp/commandlinetools.zip
 mv "$ANDROID_HOME/cmdline-tools/cmdline-tools" "$ANDROID_HOME/cmdline-tools/tools"
 pushd "$ANDROID_HOME/cmdline-tools/tools/bin"
 for bin in *; do
-    ln -s "$ANDROID_HOME/cmdline-tools/tools/bin/$bin" "/ci/bin/$bin"
+    test -f "$bin" && test -x "$bin" && \
+        ln -s "$ANDROID_HOME/cmdline-tools/tools/bin/$bin" "/ci/bin/$bin"
 done
 popd
