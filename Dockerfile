@@ -27,12 +27,16 @@ RUN --mount=target=/build/script.sh,source=/build/tools/03-android.sh /build/scr
 FROM tools-base AS tools-gcloud
 RUN --mount=target=/build/script.sh,source=/build/tools/04-gcloud.sh /build/script.sh
 
+FROM tools-base AS tools-node-pm
+RUN --mount=target=/build/script.sh,source=/build/tools/05-node-pm.sh /build/script.sh
+
 FROM tools-base AS tools
 COPY --chown=1000:100 --link ci/ /ci/
 COPY --from=tools-docker --link /ci/ /ci/
 COPY --from=tools-blackbox --link /ci/ /ci/
 COPY --from=tools-android --link /ci/ /ci/
 COPY --from=tools-gcloud --link /ci/ /ci/
+COPY --from=tools-node-pm --link /ci/ /ci/
 
 ### System
 FROM ubuntu:22.04 AS system
