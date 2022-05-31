@@ -18,14 +18,3 @@ mkdir /opt/hostedtoolcache
 chown runner:runner /opt/hostedtoolcache
 chmod g+rwx /opt/hostedtoolcache
 echo "AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache" | tee -a /etc/environment
-
-mkdir /actions-runner
-chown runner:runner /actions-runner
-chmod +rwx /actions-runner
-
-su runner <<EOF
-cd /actions-runner
-curl -o actions-runner.tar.gz -L "https://github.com/actions/runner/releases/download/v$RUNNER_VERSION/actions-runner-linux-x64-$RUNNER_VERSION.tar.gz"
-tar xzf ./actions-runner.tar.gz
-rm ./actions-runner.tar.gz
-EOF

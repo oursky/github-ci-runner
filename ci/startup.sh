@@ -4,7 +4,7 @@
 
 source logger.bash
 
-RUNNER_ASSETS_DIR=${RUNNER_ASSETS_DIR:-/actions-runner}
+RUNNER_ASSETS_DIR=${RUNNER_ASSETS_DIR:-/ci/runner}
 RUNNER_HOME=${RUNNER_HOME:-/runner}
 
 if [ ! -z "${STARTUP_DELAY_IN_SECONDS}" ]; then
@@ -147,7 +147,7 @@ if [ "${RUNNER_FEATURE_FLAG_EPHEMERAL:-}" != "true" -a "${RUNNER_EPHEMERAL}" == 
   log.warning 'Passing --once is deprecated and will be removed as an option' \
     'from the image and actions-runner-controller at the release of 0.24.0.' \
     'Upgrade to GHES => 3.3 to continue using actions-runner-controller. If' \
-    'you are using github.com ignore this warning.'
+    'youx are using github.com ignore this warning.'
 fi
 
 # Unset entrypoint environment variables so they don't leak into the runner environment
