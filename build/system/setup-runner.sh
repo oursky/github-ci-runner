@@ -11,6 +11,7 @@ apt-fast install liblttng-ust1 libkrb5-3 zlib1g libicu-dev libicu70 libyaml-dev
 
 adduser --disabled-password --gecos "" --uid 1000 runner
 usermod -aG sudo runner
+usermod -aG docker runner
 usermod -aG sudo root
 echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers
 

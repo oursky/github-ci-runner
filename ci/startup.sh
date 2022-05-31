@@ -12,6 +12,8 @@ if [ ! -z "${STARTUP_DELAY_IN_SECONDS}" ]; then
   sleep ${STARTUP_DELAY_IN_SECONDS}
 fi
 
+./dind.sh
+
 if [[ "${DISABLE_WAIT_FOR_DOCKER}" != "true" ]] && [[ "${DOCKER_ENABLED}" == "true" ]]; then
     log.debug 'Docker enabled runner detected and Docker daemon wait is enabled'
     log.debug 'Waiting until Docker is available or the timeout is reached'
