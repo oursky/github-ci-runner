@@ -69,6 +69,7 @@ USER runner
 ENV HOME=/home/runner
 ENV PATH="${PATH}:/ci/bin"
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+# Runner needs SIGINT to exit gracefully
+ENTRYPOINT ["/usr/bin/dumb-init", "--rewrite", "15:2", "--"]
 WORKDIR "/ci"
 CMD ["/ci/startup.sh"]
