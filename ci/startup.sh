@@ -12,6 +12,10 @@ if [ ! -z "${STARTUP_DELAY_IN_SECONDS}" ]; then
   sleep ${STARTUP_DELAY_IN_SECONDS}
 fi
 
+pushd ./setup
+source ./setup.sh
+popd
+
 ./dind.sh
 
 if [[ "${DISABLE_WAIT_FOR_DOCKER}" != "true" ]] && [[ "${DOCKER_ENABLED}" == "true" ]]; then
@@ -76,10 +80,6 @@ if [[ "${UNITTEST:-}" == '' ]]; then
   cp -r "$RUNNER_ASSETS_DIR"/* "$RUNNER_HOME"/
   shopt -u dotglob
 fi
-
-pushd ./setup
-source ./setup.sh
-popd
 
 cd ${RUNNER_HOME}
 # past that point, it's all relative pathes from /runner
