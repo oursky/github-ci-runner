@@ -18,3 +18,6 @@ HELM_PLUGINS=/ci/tools/helm/plugins helm plugin install https://github.com/datab
 
 curl -o /ci/bin/helmfile -L "https://github.com/roboll/helmfile/releases/download/v0.144.0/helmfile_linux_amd64"
 chmod +x /ci/bin/helmfile
+
+curl -o /ci/bin/docuum -L "https://github.com/stepchowfun/docuum/releases/download/v0.21.1/docuum-x86_64-unknown-linux-gnu"
+chmod +x /ci/bin/docuum
