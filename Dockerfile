@@ -30,6 +30,9 @@ RUN --mount=target=/build/script.sh,source=/build/tools/04-gcloud.sh /build/scri
 FROM tools-base AS tools-node-pm
 RUN --mount=target=/build/script.sh,source=/build/tools/05-node-pm.sh /build/script.sh
 
+FROM tools-base AS tools-asdf
+RUN --mount=target=/build/script.sh,source=/build/tools/06-asdf.sh /build/script.sh
+
 FROM tools-base AS tools-runner
 RUN --mount=target=/build/script.sh,source=/build/tools/99-runner.sh /build/script.sh
 
@@ -40,6 +43,7 @@ COPY --from=tools-blackbox --link /ci/ /ci/
 COPY --from=tools-android --link /ci/ /ci/
 COPY --from=tools-gcloud --link /ci/ /ci/
 COPY --from=tools-node-pm --link /ci/ /ci/
+COPY --from=tools-asdf --link /ci/ /ci/
 COPY --from=tools-runner --link /ci/ /ci/
 
 ### System
