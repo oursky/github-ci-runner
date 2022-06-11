@@ -12,8 +12,8 @@ RUN adduser --disabled-password --gecos "" --uid 1000 runner && \
     chown runner:runner /ci
 
 USER runner
-RUN mkdir -p /ci/bin
-ENV PATH="${PATH}:/ci/bin"
+RUN mkdir -p /ci/tools/bin
+ENV PATH="${PATH}:/ci/tools/bin"
 
 FROM tools-base AS tools-docker
 RUN --mount=target=/build/script.sh,source=/build/tools/01-docker.sh /build/script.sh
@@ -38,13 +38,20 @@ RUN --mount=target=/build/script.sh,source=/build/tools/99-runner.sh /build/scri
 
 FROM tools-base AS tools
 COPY --chown=1000:100 --link ci/ /ci/
-COPY --from=tools-docker --link /ci/ /ci/
-COPY --from=tools-blackbox --link /ci/ /ci/
-COPY --from=tools-android --link /ci/ /ci/
-COPY --from=tools-gcloud --link /ci/ /ci/
-COPY --from=tools-node-pm --link /ci/ /ci/
-COPY --from=tools-asdf --link /ci/ /ci/
-COPY --from=tools-runner --link /ci/ /ci/
+COPY --from=tools-docker --link /ci /ci
+COPY --from=tools-docker --link /etc/profile.d /etc/profile.d
+COPY --from=tools-blackbox --link /ci /ci
+COPY --from=tools-blackbox --link /etc/profile.d /etc/profile.d
+COPY --from=tools-android --link /ci /ci
+COPY --from=tools-android --link /etc/profile.d /etc/profile.d
+COPY --from=tools-gcloud --link /ci /ci
+COPY --from=tools-gcloud --link /etc/profile.d /etc/profile.d
+COPY --from=tools-node-pm --link /ci /ci
+COPY --from=tools-node-pm --link /etc/profile.d /etc/profile.d
+COPY --from=tools-asdf --link /ci /ci
+COPY --from=tools-asdf --link /etc/profile.d /etc/profile.d
+COPY --from=tools-runner --link /ci /ci
+COPY --from=tools-runner --link /etc/profile.d /etc/profile.d
 
 ### System
 FROM ubuntu:22.04 AS system
@@ -65,13 +72,10 @@ RUN --mount=target=/build/script.sh,source=/build/system/cleanup.sh /build/scrip
 FROM scratch
 
 COPY --from=system --link / /
-COPY --from=tools --link /ci/ /ci/
-
-RUN --mount=target=/build/script.sh,source=/build/tools/setup-env.sh /build/script.sh
+COPY --from=tools --link /ci /ci
+COPY --from=tools --link /etc/profile.d /etc/profile.d
 
 USER runner
-ENV HOME=/home/runner
-ENV PATH="${PATH}:/ci/bin"
 
 # Runner needs SIGINT to exit gracefully
 ENTRYPOINT ["/usr/bin/dumb-init", "--rewrite", "15:2", "--"]

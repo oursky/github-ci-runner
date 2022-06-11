@@ -162,9 +162,4 @@ unset RUNNER_NAME RUNNER_REPO RUNNER_TOKEN STARTUP_DELAY_IN_SECONDS DISABLE_WAIT
 # https://github.com/actions-runner-controller/actions-runner-controller/issues/1135
 # https://github.com/actions/runner/issues/1703
 
-# /etc/environment may not exist when running unit tests depending on the platform being used
-# (e.g. Mac OS) so we just skip the mapping entirely
-if [ -z "${UNITTEST:-}" ]; then
-  mapfile -t env </etc/environment
-fi
-exec env -- "${env[@]}" ./run.sh "${args[@]}"
+exec bash -l -s "${args[@]}" <<< 'exec ./run.sh "$@"'

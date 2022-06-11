@@ -18,4 +18,8 @@ echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers
 mkdir /opt/hostedtoolcache
 chown runner:runner /opt/hostedtoolcache
 chmod g+rwx /opt/hostedtoolcache
-echo "AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache" | tee -a /etc/environment
+echo "AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache" >> /etc/environment
+
+cat <<EOF >> /etc/profile.d/01-runner.sh
+export AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
+EOF
