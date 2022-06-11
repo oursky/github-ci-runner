@@ -3,8 +3,12 @@ name: Build Runner
 on:
   push:
     branches: [master, dev]
+    paths:
+      - 'linux/**'
   pull_request:
     branches: [master]
+    paths:
+      - 'linux/**'
 
 jobs:
   build:
@@ -17,12 +21,12 @@ jobs:
       - name: Build Image
         run: |
           docker buildx create --name builder --use --driver docker-container
-          make build BUILDX_ARGS="--cache-from=type=gha --cache-to=type=gha,mode=max --load"
+          make -C linux build BUILDX_ARGS="--cache-from=type=gha --cache-to=type=gha,mode=max --load"
 
       - name: Push Image
         if: ${{ github.event_name == 'push' }}
         run: |-
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           test "$GITHUB_REF_NAME" = master && \
-            make push TAG=latest || \
-            make push TAG="$GITHUB_REF_NAME"
+            make -C linux push TAG=latest || \
+            make -C linux push TAG="$GITHUB_REF_NAME"
