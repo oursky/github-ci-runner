@@ -27,9 +27,6 @@ RUN --mount=target=/build/script.sh,source=/build/tools/03-android.sh /build/scr
 FROM tools-base AS tools-gcloud
 RUN --mount=target=/build/script.sh,source=/build/tools/04-gcloud.sh /build/script.sh
 
-FROM tools-base AS tools-node-pm
-RUN --mount=target=/build/script.sh,source=/build/tools/05-node-pm.sh /build/script.sh
-
 FROM tools-base AS tools-asdf
 RUN --mount=target=/build/script.sh,source=/build/tools/06-asdf.sh /build/script.sh
 
@@ -46,8 +43,6 @@ COPY --from=tools-android --link /ci /ci
 COPY --from=tools-android --link /etc/profile.d /etc/profile.d
 COPY --from=tools-gcloud --link /ci /ci
 COPY --from=tools-gcloud --link /etc/profile.d /etc/profile.d
-COPY --from=tools-node-pm --link /ci /ci
-COPY --from=tools-node-pm --link /etc/profile.d /etc/profile.d
 COPY --from=tools-asdf --link /ci /ci
 COPY --from=tools-asdf --link /etc/profile.d /etc/profile.d
 COPY --from=tools-runner --link /ci /ci
@@ -58,13 +53,15 @@ FROM ubuntu:22.04 AS system
 ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /build
-RUN --mount=target=/build/script.sh,source=/build/system/setup-env.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/setup-dpkg.sh /build/script.sh
+RUN --mount=target=/build/script.sh,source=/build/system/setup-env.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/packages/01-base.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/packages/02-git.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/packages/03-docker.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/packages/04-browsers.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/packages/05-zstd.sh /build/script.sh
+RUN --mount=target=/build/script.sh,source=/build/system/packages/06-python.sh /build/script.sh
+RUN --mount=target=/build/script.sh,source=/build/system/packages/07-nodejs.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/setup-runner.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/cleanup.sh /build/script.sh
 

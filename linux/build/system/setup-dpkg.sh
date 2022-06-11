@@ -41,3 +41,7 @@ add-apt-repository universe
 
 apt-fast update
 apt-fast dist-upgrade
+
+cat <<EOF >> /etc/profile.d/01-ci-bin.sh
+export DEBIAN_FRONTEND=noninteractive
+EOF

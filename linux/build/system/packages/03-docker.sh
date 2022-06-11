@@ -4,6 +4,7 @@ set -euxo pipefail
 apt-fast install \
     moby-engine moby-cli moby-buildx moby-compose \
     supervisor
+usermod -aG docker runner
 
 # https://github.com/docker-library/docker/blob/master/20.10/dind/Dockerfile
 addgroup --system dockremap; \
