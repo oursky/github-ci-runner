@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd "${0%/*}"
+set -euxo pipefail
+
+./setup-tcc.sh

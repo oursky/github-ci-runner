@@ -1,0 +1,17 @@
+[
+    "waitFor:Macintosh HD",
+    "keyPress:command:f5",
+    "waitFor:VoiceOver",
+    "keyPress:control:option:f",
+    "text:option",
+    "sleep:1000",
+    "keyPress:return",
+    "keyPress:return",
+    "waitFor:Language Chooser",
+    "keyPress:return",
+    "waitFor:Utilities",
+    "keyPress:command:shift:t",
+    "waitFor:bash",
+    "text:/Volumes/provisioning/provision.sh",
+    "keyPress:return"
+]
