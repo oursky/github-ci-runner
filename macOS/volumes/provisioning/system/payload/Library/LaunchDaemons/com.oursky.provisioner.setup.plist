@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>com.oursky.provisioner.agent</string>
+	<string>com.oursky.provisioner.setup</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/private/var/provisioner/cleanup.sh</string>
+		<string>/private/var/provisioner/setup.sh</string>
 	</array>
 	<key>StandardOutPath</key>
-	<string>/tmp/provisioner.out.log</string>
+	<string>/private/var/log/provisioner.setup.log</string>
 	<key>StandardErrorPath</key>
-	<string>/tmp/provisioner.err.log</string>
+	<string>/private/var/log/provisioner.setup.log</string>
 	<key>RunAtLoad</key>
 	<true/>
 </dict>

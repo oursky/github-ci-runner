@@ -8,6 +8,7 @@
     "keyPress:return",
     "keyPress:return",
     "waitFor:Language Chooser",
+    "sleep:1000",
     "keyPress:return",
     "waitFor:Utilities",
     "keyPress:command:shift:t",

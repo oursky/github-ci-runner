@@ -6,12 +6,12 @@
 	<string>com.oursky.provisioner.daemon</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/private/var/provisioner/run.sh</string>
+		<string>/private/var/provisioner/daemon.sh</string>
 	</array>
 	<key>StandardOutPath</key>
-	<string>/private/var/log/provisioner.out.log</string>
+	<string>/private/var/log/provisioner.daemon.log</string>
 	<key>StandardErrorPath</key>
-	<string>/private/var/log/provisioner.err.log</string>
+	<string>/private/var/log/provisioner.daemon.log</string>
 	<key>RunAtLoad</key>
 	<true/>
 </dict>
