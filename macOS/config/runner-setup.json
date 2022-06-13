@@ -5,6 +5,7 @@
     "displayHeight": 768,
     "noGraphics": false,
     "additionalDisks": [
-        { "path": "../volumes/provisioning.dmg", "readOnly": true }
+        { "path": "../volumes/setup.dmg", "readOnly": true },
+        { "path": "../volumes/cache.dmg", "readOnly": false }
     ]
 }
