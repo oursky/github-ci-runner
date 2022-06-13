@@ -38,3 +38,20 @@ cache.dmg:
 		cache
 	hdiutil resize -size 50G cache.dmg
 
+xcodes.dmg:
+	hdiutil create \
+		-ov \
+		-volname xcodes \
+		-layout GPTSPUD \
+		-fs APFS \
+		-type UDIF \
+		-size 10m \
+		xcodes
+	hdiutil resize -size 100G xcodes.dmg
+	hdiutil attach xcodes.dmg
+	xcodes/extract.sh
+	xcodes/optimize.sh
+	hdiutil detach /Volumes/xcodes
+
+	hdiutil resize -sectors min xcodes.dmg
+	hdiutil resize -size 100G xcodes.dmg
