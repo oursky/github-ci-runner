@@ -12,8 +12,10 @@ CERTIFICATES=(
     'AppleWWDRCAG3.cer'
     'DeveloperIDG2CA.cer'
 )
+swiftc -o /tmp/add-certificate ../assets/add-certificate.swift
 for CERT in "${CERTIFICATES[@]}"; do
     curl -o "/tmp/$CERT" "https://www.apple.com/certificateauthority/$CERT"
-    sudo swift ../assets/add-certificate.swift "/tmp/$CERT"
+    /tmp/add-certificate "/tmp/$CERT"
     rm "/tmp/$CERT"
 done
+rm /tmp/add-certificate
