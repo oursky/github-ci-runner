@@ -1,3 +1,4 @@
+.PHONY: provisioning.dmg
 provisioning.dmg: provisioning/provisioner.pkg provisioning/provision.sh provisioning/autorun.sh
 	hdiutil create \
 		-ov \
@@ -10,14 +11,16 @@ provisioning.dmg: provisioning/provisioner.pkg provisioning/provision.sh provisi
 		-srcfolder provisioning/autorun.sh \
 		provisioning
 
-provisioning/provisioner.pkg: $(shell find provisioning/system)
+.PHONY: provisioning/provisioner.pkg
+provisioning/provisioner.pkg:
 	pkgbuild \
 		--identifier com.oursky.provisioner \
 		--root "provisioning/system/payload" \
 		--scripts "provisioning/system/scripts" \
 		"provisioning/provisioner.pkg"
 
-setup.dmg: $(shell find setup)
+.PHONY: setup.dmg
+setup.dmg:
 	hdiutil create \
 		-ov \
 		-volname setup \
@@ -27,6 +30,7 @@ setup.dmg: $(shell find setup)
 		-srcfolder setup \
 		setup
 
+.PHONY: cache.dmg
 cache.dmg:
 	hdiutil create \
 		-ov \
@@ -55,3 +59,21 @@ xcodes.dmg:
 
 	hdiutil resize -sectors min xcodes.dmg
 	hdiutil resize -size 100G xcodes.dmg
+
+RUNNER_VER?=2.293.0
+
+.PHONY: runner.dmg
+runner.dmg: runner/actions-runner
+	hdiutil create \
+		-ov \
+		-volname runner \
+		-layout GPTSPUD \
+		-fs APFS \
+		-format UDIF \
+		-srcfolder runner \
+		runner
+
+runner/actions-runner:
+	mkdir -p runner/actions-runner
+	curl -L https://github.com/actions/runner/releases/download/v$(RUNNER_VER)/actions-runner-osx-arm64-$(RUNNER_VER).tar.gz \
+		| tar xzC runner/actions-runner

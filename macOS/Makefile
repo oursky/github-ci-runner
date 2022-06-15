@@ -26,3 +26,8 @@ runner:
 	$(MAKE) -C volumes setup.dmg cache.dmg
 	bin/vmctl clone instances/base.bundle instances/runner.bundle
 	bin/vmctl start --config config/runner-setup.json --bundle instances/runner.bundle
+
+.PHONY: test
+test:
+	bin/vmctl clone instances/runner.bundle instances/test.bundle
+	bin/vmctl start --config config/runner.json --bundle instances/test.bundle
