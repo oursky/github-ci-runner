@@ -23,7 +23,7 @@ base:
 
 .PHONY: runner
 runner:
-	$(MAKE) -C volumes setup.dmg cache.dmg
+	$(MAKE) -C volumes setup.dmg cache.dmg xcodes.dmg
 	bin/vmctl clone instances/base.bundle instances/runner.bundle
 	bin/vmctl start --config config/runner-setup.json --bundle instances/runner.bundle
 
