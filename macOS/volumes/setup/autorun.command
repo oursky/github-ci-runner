@@ -8,7 +8,8 @@ for script in *.sh; do
     bash -l "./$script"
 done
 
-sudo rm -rf /tmp/*
-
-sudo mdutil -E /
-sudo log stream | grep -q -E 'mds.*Released.*BackgroundTask' || true
+(
+  sleep 1
+  osascript -e 'tell application "Terminal" to close first window'
+  osascript -e 'tell application "System Events" to shut down'
+) &
