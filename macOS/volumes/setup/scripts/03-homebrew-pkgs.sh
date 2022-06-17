@@ -9,6 +9,7 @@ brew install \
     "git" \
     "git-lfs" \
     "gnupg" \
+    "gnu-tar" \
     "jq" \
     "ruby" \
     "wget" \
