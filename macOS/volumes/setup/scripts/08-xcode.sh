@@ -19,13 +19,3 @@ for CERT in "${CERTIFICATES[@]}"; do
     rm "/tmp/$CERT"
 done
 rm /tmp/add-certificate
-
-cp ../assets/oursky.keychain ~/Library/Keychains
-source ../assets/.env
-security list-keychains -s `security list-keychains | xargs` ~/Library/Keychains/oursky.keychain
-security unlock-keychain -p $KEYCHAIN_PASSWORD ~/Library/Keychains/oursky.keychain
-security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD ~/Library/Keychains/oursky.keychain
-security find-identity -v -p codesigning
-
-mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-rm -f ../assets/.env
