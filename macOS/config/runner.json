@@ -5,8 +5,7 @@
     "displayHeight": 768,
     "noGraphics": false,
     "additionalDisks": [
-        { "path": "../volumes/runner.dmg", "readOnly": true },
         { "path": "../volumes/xcodes.dmg", "readOnly": true },
-        { "path": "../volumes/cache.dmg", "readOnly": false }
+        { "path": "../volumes/cache.dmg", "readOnly": true }
     ]
 }
