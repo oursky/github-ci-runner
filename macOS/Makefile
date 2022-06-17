@@ -2,32 +2,36 @@
 help:
 	@echo 'make [ipsw|vanilla|base]'
 
+instances:
+	mkdir -p ~/.vms/instances
+
 .PHONY: ipsw
 ipsw:
-	aria2c -x16 -s16 -o images/macOS.ipsw $$(bin/vmctl ipsw)
+	@mkdir -p ~/.vms/images
+	aria2c -x16 -s16 -o ~/.vms/images/macOS.ipsw $$(bin/vmctl ipsw)
 
 .PHONY: vanilla
-vanilla: images/macOS.ipsw
+vanilla: images/macOS.ipsw instances
 	bin/vmctl install \
 		--config config/installer-vanilla.json \
-		--bundle instances/vanilla.bundle \
-		--ipsw images/macOS.ipsw \
+		--bundle ~/.vms/instances/vanilla.bundle \
+		--ipsw ~/.vms/images/macOS.ipsw \
 		--disk-size-gb 100
 
 .PHONY: base
-base:
+base: instances
 	$(MAKE) -C volumes provisioning.dmg
-	bin/vmctl clone instances/vanilla.bundle instances/base.bundle
-	bin/vmctl start --config config/installer-base.json --bundle instances/base.bundle --recovery --key-script config/installer-script.json
-	bin/vmctl start --config config/installer-base.json --bundle instances/base.bundle
+	bin/vmctl clone ~/.vms/instances/vanilla.bundle ~/.vms/instances/base.bundle
+	bin/vmctl start --config config/installer-base.json --bundle ~/.vms/instances/base.bundle --recovery --key-script config/installer-script.json
+	bin/vmctl start --config config/installer-base.json --bundle ~/.vms/instances/base.bundle
 
 .PHONY: runner
-runner:
+runner: instances
 	$(MAKE) -C volumes setup.dmg cache.dmg xcodes.dmg
-	bin/vmctl clone instances/base.bundle instances/runner.bundle
-	bin/vmctl start --config config/runner-setup.json --bundle instances/runner.bundle
+	bin/vmctl clone ~/.vms/instances/base.bundle ~/.vms/instances/runner.bundle
+	bin/vmctl start --config config/runner-setup.json --bundle ~/.vms/instances/runner.bundle
 
 .PHONY: test
-test:
-	bin/vmctl clone instances/runner.bundle instances/test.bundle
-	bin/vmctl start --config config/runner.json --bundle instances/test.bundle
+test: instances
+	bin/vmctl clone ~/.vms/instances/runner.bundle ~/.vms/instances/test.bundle
+	bin/vmctl start --config config/runner.json --bundle ~/.vms/instances/test.bundle

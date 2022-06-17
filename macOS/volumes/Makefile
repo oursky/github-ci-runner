@@ -1,5 +1,8 @@
+volumes:
+	mkdir -p ~/.vms/volumes
+
 .PHONY: provisioning.dmg
-provisioning.dmg: provisioning/provisioner.pkg provisioning/provision.sh provisioning/autorun.sh
+provisioning.dmg: provisioning/provisioner.pkg provisioning/provision.sh provisioning/autorun.sh volumes
 	hdiutil create \
 		-ov \
 		-volname provisioning \
@@ -10,6 +13,7 @@ provisioning.dmg: provisioning/provisioner.pkg provisioning/provision.sh provisi
 		-srcfolder provisioning/provision.sh \
 		-srcfolder provisioning/autorun.sh \
 		provisioning
+	@ln -f provisioning.dmg ~/.vms/volumes/
 
 .PHONY: provisioning/provisioner.pkg
 provisioning/provisioner.pkg:
@@ -20,7 +24,7 @@ provisioning/provisioner.pkg:
 		"provisioning/provisioner.pkg"
 
 .PHONY: setup.dmg
-setup.dmg:
+setup.dmg: volumes
 	hdiutil create \
 		-ov \
 		-volname setup \
@@ -29,9 +33,10 @@ setup.dmg:
 		-format UDIF \
 		-srcfolder setup \
 		setup
+	@ln -f setup.dmg ~/.vms/volumes/
 
 .PHONY: cache.dmg
-cache.dmg:
+cache.dmg: volumes
 	hdiutil create \
 		-ov \
 		-volname cache \
@@ -41,8 +46,9 @@ cache.dmg:
 		-size 10m \
 		cache
 	hdiutil resize -size 50G cache.dmg
+	@ln -f cache.dmg ~/.vms/volumes/
 
-xcodes.dmg:
+xcodes.dmg: volumes
 	hdiutil create \
 		-ov \
 		-volname xcodes \
@@ -59,11 +65,12 @@ xcodes.dmg:
 
 	hdiutil resize -sectors min xcodes.dmg
 	hdiutil resize -size 100G xcodes.dmg
+	@ln -f xcodes.dmg ~/.vms/volumes/
 
 RUNNER_VER?=2.293.0
 
 .PHONY: runner.dmg
-runner.dmg: runner/actions-runner
+runner.dmg: runner/actions-runner volumes
 	hdiutil create \
 		-ov \
 		-volname runner \
@@ -72,6 +79,7 @@ runner.dmg: runner/actions-runner
 		-format UDIF \
 		-srcfolder runner \
 		runner
+	@ln -f runner.dmg ~/.vms/volumes/
 
 runner/actions-runner:
 	mkdir -p runner/actions-runner
