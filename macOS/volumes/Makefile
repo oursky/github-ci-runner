@@ -48,17 +48,15 @@ xcodes.dmg:
 		-volname xcodes \
 		-layout GPTSPUD \
 		-fs APFS \
-		-type UDIF \
-		-size 10m \
+		-type SPARSE \
+		-size 100G \
 		xcodes
-	hdiutil resize -size 100G xcodes.dmg
-	hdiutil attach xcodes.dmg
+	hdiutil attach xcodes.sparseimage
 	xcodes/extract.sh
-	xcodes/optimize.sh
 	hdiutil detach /Volumes/xcodes
-
-	hdiutil resize -sectors min xcodes.dmg
-	hdiutil resize -size 100G xcodes.dmg
+	hdiutil resize -sectors min xcodes.sparseimage
+	hdiutil convert -ov -format UDRW -o xcodes.dmg xcodes.sparseimage
+	rm xcodes.sparseimage
 
 RUNNER_VER?=2.293.0
 
