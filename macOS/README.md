@@ -26,3 +26,9 @@
 5. Run `make runner` to make runner image
   - Ensure Command Line Tools are prepared as mentioned above
 6. Run `make -C volumes runner.dmg` to make runner volume
+7. Or just `make vanilla base runner`
+
+## Run VM Coordinator
+
+1. Prepare `runner-1.json` from `runner-template.json`
+2. Run `bin/coordinator -config runner-1.json`

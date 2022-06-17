@@ -1,0 +1,20 @@
+{
+  "auth": {
+    "type": "Token",
+    "token": "<GitHub personal access token>"
+  },
+  "target": "https://github.com/oursky[/repo]",
+  "runners": [
+    {
+      "baseVMBundlePath": "/Users/<username>/.vms/instances/runner.bundle",
+      "vmConfigPath": "/path/to/github-ci-runner/macOS/config/runner.json",
+      "runnerGroup": "default",
+      "labels": [
+        "self-hosted",
+        "macOS",
+        "ARM64"
+      ]
+    }
+  ],
+  "vmctlPath": "/path/to/github-ci-runner/macOS/bin/vmctl"
+}
