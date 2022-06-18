@@ -34,7 +34,12 @@ runner: instances
 	bin/vmctl clone $(VM_HOME)/instances/base.bundle $(VM_HOME)/instances/runner.bundle
 	bin/vmctl start --config config/runner-setup.json --bundle $(VM_HOME)/instances/runner.bundle
 
-.PHONY: test
-test: instances
-	bin/vmctl clone $(VM_HOME)/instances/vanilla.bundle $(VM_HOME)/instances/base.bundle
-	bin/vmctl start --config config/installer-base.json --bundle $(VM_HOME)/instances/base.bundle
+.PHONY: test-base
+test-base: instances
+	bin/vmctl clone instances/base.bundle instances/test.bundle
+	bin/vmctl start --config config/runner-test.json --bundle instances/test.bundle
+
+.PHONY: test-runner
+test-runner: instances
+	bin/vmctl clone instances/runner.bundle instances/test.bundle
+	bin/vmctl start --config config/runner-test.json --bundle instances/test.bundle
