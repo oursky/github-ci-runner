@@ -1,4 +1,4 @@
-VM_HOME ?= .
+VM_HOME ?= ..
 
 volumes:
 	mkdir -p $(VM_HOME)/volumes
