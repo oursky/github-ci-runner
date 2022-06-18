@@ -62,6 +62,7 @@ xcodes.dmg: volumes
 		xcodes
 	hdiutil attach xcodes.sparseimage
 	xcodes/extract.sh
+	xcodes/optimize.sh
 	hdiutil detach /Volumes/xcodes
 	hdiutil resize -sectors min xcodes.sparseimage
 	hdiutil convert -ov -format UDRW -o xcodes.dmg xcodes.sparseimage
