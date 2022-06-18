@@ -1,5 +1,10 @@
+VM_HOME ?= .
+
+volumes:
+	mkdir -p $(VM_HOME)/volumes
+
 .PHONY: provisioning.dmg
-provisioning.dmg: provisioning/provisioner.pkg provisioning/provision.sh provisioning/autorun.sh
+provisioning.dmg: provisioning/provisioner.pkg provisioning/provision.sh provisioning/autorun.sh volumes
 	hdiutil create \
 		-ov \
 		-volname provisioning \
@@ -10,6 +15,7 @@ provisioning.dmg: provisioning/provisioner.pkg provisioning/provision.sh provisi
 		-srcfolder provisioning/provision.sh \
 		-srcfolder provisioning/autorun.sh \
 		provisioning
+	@ln -f provisioning.dmg $(VM_HOME)/volumes/ || true
 
 .PHONY: provisioning/provisioner.pkg
 provisioning/provisioner.pkg:
@@ -20,7 +26,7 @@ provisioning/provisioner.pkg:
 		"provisioning/provisioner.pkg"
 
 .PHONY: setup.dmg
-setup.dmg:
+setup.dmg: volumes
 	hdiutil create \
 		-ov \
 		-volname setup \
@@ -29,9 +35,10 @@ setup.dmg:
 		-format UDIF \
 		-srcfolder setup \
 		setup
+	@ln -f setup.dmg $(VM_HOME)/volumes/ || true
 
 .PHONY: cache.dmg
-cache.dmg:
+cache.dmg: volumes
 	hdiutil create \
 		-ov \
 		-volname cache \
@@ -42,7 +49,9 @@ cache.dmg:
 		cache
 	hdiutil resize -size 50G cache.dmg
 
-xcodes.dmg:
+	@ln -f cache.dmg $(VM_HOME)/volumes/ || true
+
+xcodes.dmg: volumes
 	hdiutil create \
 		-ov \
 		-volname xcodes \
@@ -58,10 +67,12 @@ xcodes.dmg:
 	hdiutil convert -ov -format UDRW -o xcodes.dmg xcodes.sparseimage
 	rm xcodes.sparseimage
 
+	@ln -f xcodes.dmg $(VM_HOME)/volumes/ || true
+
 RUNNER_VER?=2.293.0
 
 .PHONY: runner.dmg
-runner.dmg: runner/actions-runner
+runner.dmg: runner/actions-runner volumes
 	hdiutil create \
 		-ov \
 		-volname runner \
@@ -70,6 +81,7 @@ runner.dmg: runner/actions-runner
 		-format UDIF \
 		-srcfolder runner \
 		runner
+	@ln -f runner.dmg $(VM_HOME)/volumes/ || true
 
 runner/actions-runner:
 	mkdir -p runner/actions-runner
