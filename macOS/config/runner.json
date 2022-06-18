@@ -6,6 +6,7 @@
     "noGraphics": false,
     "additionalDisks": [
         { "path": "../volumes/xcodes.dmg", "readOnly": true },
-        { "path": "../volumes/cache.dmg", "readOnly": true }
+        { "path": "../volumes/runner.dmg", "readOnly": false },
+        { "path": "../volumes/cache.dmg", "readOnly": false }
     ]
 }
