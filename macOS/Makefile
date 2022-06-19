@@ -30,9 +30,11 @@ base: instances
 
 .PHONY: runner
 runner: instances
-	$(MAKE) -C volumes setup.dmg cache.dmg xcodes.dmg
+	$(MAKE) -C volumes setup.dmg cache.dmg xcodes.dmg security.dmg
 	bin/vmctl clone $(VM_HOME)/instances/base.bundle $(VM_HOME)/instances/runner.bundle
 	bin/vmctl start --config config/runner-setup.json --bundle $(VM_HOME)/instances/runner.bundle
+	cp -c $(VM_HOME)/cache.dmg $(VM_HOME)/volumes/cache-1.dmg
+	cp -c $(VM_HOME)/cache.dmg $(VM_HOME)/volumes/cache-2.dmg
 
 .PHONY: test-base
 test-base: instances
