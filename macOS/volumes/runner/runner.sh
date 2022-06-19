@@ -16,8 +16,7 @@ export RUNNER_TOOL_CACHE=~/hostedtoolcache
 
 test -e /Volumes/runner-setup/setup.sh && source /Volumes/runner-setup/setup.sh
 
-COORDINATOR="http://$(swift /Volumes/runner/service.swift coordinator _github-action._tcp local)"
-read TOKEN
+read COORDINATOR TOKEN
 
 CURL_ARGS=(
     "--retry" "5"
