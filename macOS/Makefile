@@ -1,47 +1,58 @@
-VM_HOME ?= .
+BUILD_ROOT ?= ./build
+
+.PHONY: .build-root
+.build-root:
+	@mkdir -p $(BUILD_ROOT)
+	@mkdir -p $(BUILD_ROOT)/assets
+	@mkdir -p $(BUILD_ROOT)/config
+	@mkdir -p $(BUILD_ROOT)/instances
+	@mkdir -p $(BUILD_ROOT)/volumes
+	@mkdir -p $(BUILD_ROOT)/xips
 
 .PHONY: help
 help:
-	@echo 'make [ipsw|vanilla|base]'
-
-.PHONY: instances
-instances:
-	mkdir -p $(VM_HOME)/instances
+	@echo 'make [ipsw|vanilla|base|runner]'
 
 .PHONY: ipsw
-ipsw:
-	@mkdir -p $(VM_HOME)/images
-	aria2c -x16 -s16 -o $(VM_HOME)/images/macOS.ipsw $$(bin/vmctl ipsw)
+ipsw: .build-root
+	aria2c -x16 -s16 -o $(BUILD_ROOT)/assets/macOS.ipsw $$(bin/vmctl ipsw)
 
 .PHONY: vanilla
-vanilla: images/macOS.ipsw instances
+vanilla: .build-root $(BUILD_ROOT)/assets/macOS.ipsw
+	cp config/installer-vanilla.json $(BUILD_ROOT)/config/
 	bin/vmctl install \
-		--config config/installer-vanilla.json \
-		--bundle $(VM_HOME)/instances/vanilla.bundle \
-		--ipsw $(VM_HOME)/images/macOS.ipsw \
+		--config $(BUILD_ROOT)/config/installer-vanilla.json \
+		--bundle $(BUILD_ROOT)/instances/vanilla.bundle \
+		--ipsw $(BUILD_ROOT)/assets/macOS.ipsw \
 		--disk-size-gb 100
 
 .PHONY: base
-base: instances
-	$(MAKE) -C volumes provisioning.dmg
-	bin/vmctl clone $(VM_HOME)/instances/vanilla.bundle $(VM_HOME)/instances/base.bundle
-	bin/vmctl start --config config/installer-base.json --bundle $(VM_HOME)/instances/base.bundle --recovery --key-script config/installer-script.json
-	bin/vmctl start --config config/installer-base.json --bundle $(VM_HOME)/instances/base.bundle
+base: .build-root $(BUILD_ROOT)/volumes/provisioning.dmg
+	cp config/installer-base.json $(BUILD_ROOT)/config/
+	bin/vmctl clone $(BUILD_ROOT)/instances/vanilla.bundle $(BUILD_ROOT)/instances/base.bundle
+	bin/vmctl start --config $(BUILD_ROOT)/config/installer-base.json --bundle $(BUILD_ROOT)/instances/base.bundle \
+		--recovery --key-script config/installer-script.json
+	bin/vmctl start --config $(BUILD_ROOT)/config/installer-base.json --bundle $(BUILD_ROOT)/instances/base.bundle
 
 .PHONY: runner
-runner: instances
-	$(MAKE) -C volumes setup.dmg cache.dmg xcodes.dmg security.dmg
-	bin/vmctl clone $(VM_HOME)/instances/base.bundle $(VM_HOME)/instances/runner.bundle
-	bin/vmctl start --config config/runner-setup.json --bundle $(VM_HOME)/instances/runner.bundle
-	cp -c $(VM_HOME)/cache.dmg $(VM_HOME)/volumes/cache-1.dmg
-	cp -c $(VM_HOME)/cache.dmg $(VM_HOME)/volumes/cache-2.dmg
+runner: .build-root $(BUILD_ROOT)/volumes/setup.dmg $(BUILD_ROOT)/volumes/cache.dmg $(BUILD_ROOT)/volumes/runner.dmg
+	test -e $(BUILD_ROOT)/volumes/xcodes.dmg
+	cp config/runner-setup.json $(BUILD_ROOT)/config/
+	bin/vmctl clone $(BUILD_ROOT)/instances/base.bundle $(BUILD_ROOT)/instances/runner.bundle
+	bin/vmctl start --config $(BUILD_ROOT)/config/runner-setup.json --bundle $(BUILD_ROOT)/instances/runner.bundle
+
+.PHONY: xcodes
+xcodes: .build-root $(BUILD_ROOT)/volumes/xcodes.dmg
 
 .PHONY: test-base
-test-base: instances
-	bin/vmctl clone instances/base.bundle instances/test.bundle
-	bin/vmctl start --config config/runner-test.json --bundle instances/test.bundle
+test-base: .build-root
+	cp config/runner-test.json $(BUILD_ROOT)/config/
+	bin/vmctl clone $(BUILD_ROOT)/instances/base.bundle $(BUILD_ROOT)/instances/test.bundle
+	bin/vmctl start --config $(BUILD_ROOT)/config/runner-test.json --bundle $(BUILD_ROOT)/instances/test.bundle
 
 .PHONY: test-runner
-test-runner: instances
-	bin/vmctl clone instances/runner.bundle instances/test.bundle
-	bin/vmctl start --config config/runner-test.json --bundle instances/test.bundle
+test-runner: .build-root
+	bin/vmctl clone $(BUILD_ROOT)/instances/runner.bundle $(BUILD_ROOT)/instances/test.bundle
+	bin/vmctl start --config $(BUILD_ROOT)/config/runner-test.json --bundle $(BUILD_ROOT)/instances/test.bundle
+
+include volumes.mk

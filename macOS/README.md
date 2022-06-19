@@ -20,13 +20,13 @@
    - If already have IPSW, skip it by putting it as `macOS/images/macOS.ipsw`
 2. Run `make vanilla` to make vanilla image
 3. Run `make base` to make base image
-4. Run `make -C volumes xcodes.dmg` to make Xcode volume
+4. Run `make xcodes` to make Xcode volume
   - Ensure Xcode xips are prepared as mentioned above
   - `jdupe` is used to optimize volume size, need much time
 5. Run `make runner` to make runner image
   - Ensure Command Line Tools are prepared as mentioned above
-6. Run `make -C volumes runner.dmg` to make runner volume
-7. Or just `make vanilla base runner`
+
+Or just `make vanilla base xcodes runner`
 
 ## Run VM Coordinator
 

@@ -3,8 +3,9 @@
 cd "${0%/*}"
 set -euxo pipefail
 
-jdupes -r -B /Volumes/xcodes >/dev/null
+ls /Volumes/xcodes/*.app > /Volumes/xcodes/apps-new.list
 
-for APP in /Volumes/xcodes/*.app; do
-    spctl -a -vv "$APP"
-done
+cmp --silent /Volumes/xcodes/apps.list /Volumes/xcodes/apps-new.list || \
+    jdupes -r -B /Volumes/xcodes >/dev/null
+
+mv /Volumes/xcodes/apps-new.list /Volumes/xcodes/apps.list
