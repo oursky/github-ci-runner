@@ -37,17 +37,6 @@ setup.dmg: volumes
 		setup
 	@ln -f setup.dmg $(VM_HOME)/volumes/ || true
 
-security.dmg: volumes $(wildcard security/*)
-	hdiutil create \
-		-ov \
-		-volname security \
-		-layout GPTSPUD \
-		-fs APFS \
-		-format UDIF \
-		-srcfolder security \
-		security
-	@ln -f security.dmg $(VM_HOME)/volumes/ || true
-
 .PHONY: cache.dmg
 cache.dmg: volumes
 	hdiutil create \
