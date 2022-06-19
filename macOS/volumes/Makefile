@@ -62,22 +62,23 @@ cache.dmg: volumes
 
 	@ln -f cache.dmg $(VM_HOME)/volumes/ || true
 
+.PHONY: xcodes.dmg
 xcodes.dmg: volumes
-	hdiutil create \
+	test -f xcodes.dmg || hdiutil create \
 		-ov \
 		-volname xcodes \
 		-layout GPTSPUD \
 		-fs APFS \
-		-type SPARSE \
-		-size 100G \
+		-type UDIF \
+		-size 10G \
 		xcodes
-	hdiutil attach xcodes.sparseimage
+
+	hdiutil resize -size 128G cache.dmg
+
+	hdiutil attach xcodes.dmg
 	xcodes/extract.sh
 	xcodes/optimize.sh
 	hdiutil detach /Volumes/xcodes
-	hdiutil resize -sectors min xcodes.sparseimage
-	hdiutil convert -ov -format UDRW -o xcodes.dmg xcodes.sparseimage
-	rm xcodes.sparseimage
 
 	@ln -f xcodes.dmg $(VM_HOME)/volumes/ || true
 
