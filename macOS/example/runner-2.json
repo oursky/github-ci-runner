@@ -1,0 +1,12 @@
+{
+    "cpuCount": 4,
+    "memoryMB": 6192,
+    "displayWidth": 1024,
+    "displayHeight": 768,
+    "noGraphics": false,
+    "additionalDisks": [
+        { "path": "xcodes.dmg", "readOnly": true },
+        { "path": "runner.dmg", "readOnly": true },
+        { "path": "cache-2.dmg", "readOnly": false }
+    ]
+}
