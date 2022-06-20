@@ -26,7 +26,7 @@ CURL_ARGS=(
 (
     echo "waiting termination signal"
     PGID=$(ps -o pgid= $$ | grep -o '[0-9]*')
-    until curl -sS "${COORDINATOR}/wait" "${CURL_ARGS[@]}"; do :; done
+    until test "$(curl -sS "${COORDINATOR}/wait" "${CURL_ARGS[@]}")" = 'stop'; do :; done
     echo "terminating runner"
     kill -SIGINT -$PGID
 ) &
