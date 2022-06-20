@@ -52,6 +52,7 @@ test-base: .build-root
 
 .PHONY: test-runner
 test-runner: .build-root
+	cp config/runner-test.json $(BUILD_ROOT)/config/
 	bin/vmctl clone $(BUILD_ROOT)/instances/runner.bundle $(BUILD_ROOT)/instances/test.bundle
 	bin/vmctl start --config $(BUILD_ROOT)/config/runner-test.json --bundle $(BUILD_ROOT)/instances/test.bundle
 
