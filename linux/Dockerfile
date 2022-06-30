@@ -74,7 +74,6 @@ COPY --from=tools --link /etc/profile.d /etc/profile.d
 
 USER runner
 
-# Runner needs SIGINT to exit gracefully
-ENTRYPOINT ["/usr/bin/dumb-init", "--rewrite", "15:2", "--"]
+ENTRYPOINT ["/usr/bin/dumb-init", "/ci/entrypoint.sh"]
 WORKDIR "/ci"
-CMD ["/ci/startup.sh"]
+CMD ["-config=/ci/agent.toml"]
