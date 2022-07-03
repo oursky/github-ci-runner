@@ -87,6 +87,7 @@ PACKAGES=(
     ###
     "cmake"
     "gettext"
+    "btrfs-progs"
 )
 
 apt-fast install --no-install-recommends "${PACKAGES[@]}"

@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 set -euxo pipefail
 
-mkdir -p /ci/tools/android
-export ANDROID_HOME=/ci/tools/android
+mkdir -p /var/runner/tools/android
+export ANDROID_HOME=/var/runner/tools/android
 
 mkdir -p "$ANDROID_HOME/cmdline-tools"
 curl -L https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -o /tmp/commandlinetools.zip

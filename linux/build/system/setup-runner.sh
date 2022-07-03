@@ -14,5 +14,10 @@ chmod g+rwx /opt/hostedtoolcache
 cat <<EOF >> /etc/profile.d/01-runner.sh
 export AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 export ImageOS=ubuntu22
-export PATH="\$PATH:/ci/tools/bin"
+export PATH="\$PATH:/var/runner/tools/bin"
 EOF
+
+curl -L https://github.com/just-containers/s6-overlay/releases/download/v3.1.1.2/s6-overlay-noarch.tar.xz | \
+    tar -C / -Jxp
+curl -L https://github.com/just-containers/s6-overlay/releases/download/v3.1.1.2/s6-overlay-x86_64.tar.xz | \
+    tar -C / -Jxp

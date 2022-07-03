@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export S6_SERVICES_GRACETIME=60000
+export S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+
+exec "$@"

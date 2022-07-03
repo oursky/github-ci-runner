@@ -8,12 +8,12 @@ RUN apt-get update && apt-get install -y curl git sudo make unzip
 RUN adduser --disabled-password --gecos "" --uid 1000 runner && \
     usermod -aG sudo runner && \
     echo "runner ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/runner && \
-    mkdir /ci && \
-    chown runner:runner /ci
+    mkdir /var/runner && \
+    chown 1000:1000 /var/runner
 
 USER runner
-RUN mkdir -p /ci/tools/bin
-ENV PATH="${PATH}:/ci/tools/bin"
+RUN mkdir -p /var/runner/tools/bin
+ENV PATH="${PATH}:/var/runner/tools/bin"
 
 FROM tools-base AS tools-docker
 RUN --mount=target=/build/script.sh,source=/build/tools/01-docker.sh /build/script.sh
@@ -34,19 +34,19 @@ FROM tools-base AS tools-runner
 RUN --mount=target=/build/script.sh,source=/build/tools/99-runner.sh /build/script.sh
 
 FROM tools-base AS tools
-COPY --chown=1000:100 --link ci/ /ci/
-COPY --from=tools-docker --link /ci /ci
+COPY --from=tools-docker --link /var/runner /var/runner
 COPY --from=tools-docker --link /etc/profile.d /etc/profile.d
-COPY --from=tools-blackbox --link /ci /ci
+COPY --from=tools-blackbox --link /var/runner /var/runner
 COPY --from=tools-blackbox --link /etc/profile.d /etc/profile.d
-COPY --from=tools-android --link /ci /ci
+COPY --from=tools-android --link /var/runner /var/runner
 COPY --from=tools-android --link /etc/profile.d /etc/profile.d
-COPY --from=tools-gcloud --link /ci /ci
+COPY --from=tools-gcloud --link /var/runner /var/runner
 COPY --from=tools-gcloud --link /etc/profile.d /etc/profile.d
-COPY --from=tools-asdf --link /ci /ci
+COPY --from=tools-asdf --link /var/runner /var/runner
 COPY --from=tools-asdf --link /etc/profile.d /etc/profile.d
-COPY --from=tools-runner --link /ci /ci
+COPY --from=tools-runner --link /var/runner /var/runner
 COPY --from=tools-runner --link /etc/profile.d /etc/profile.d
+COPY --from=tools-runner --link /runner /runner
 
 ### System
 FROM ubuntu:22.04 AS system
@@ -64,16 +64,15 @@ RUN --mount=target=/build/script.sh,source=/build/system/packages/06-python.sh /
 RUN --mount=target=/build/script.sh,source=/build/system/packages/07-nodejs.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/setup-runner.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/cleanup.sh /build/script.sh
+COPY --chown=1000:1000 --link root/ /
 
 ### Runner
 FROM scratch
 
 COPY --from=system --link / /
-COPY --from=tools --link /ci /ci
+COPY --from=tools --chown=1000:1000 --link /runner /runner
+COPY --from=tools --chown=1000:1000 --link /var/runner /var/runner
 COPY --from=tools --link /etc/profile.d /etc/profile.d
 
-USER runner
-
-ENTRYPOINT ["/usr/bin/dumb-init", "/ci/entrypoint.sh"]
-WORKDIR "/ci"
-CMD ["-config=/ci/agent.toml"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["/init"]
