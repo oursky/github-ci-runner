@@ -40,7 +40,7 @@ RUNNER_LABELS=$(jq -n -r --argjson resp "$RESP" '$resp.labels')
 
 cp -R actions-runner/ ~/runner
 
-~/runner/config.sh --unattended --replace --ephemeral \
+~/runner/config.sh --unattended --replace --ephemeral --disableupdate \
     --name "$RUNNER_NAME" \
     --url "$GITHUB_URL" \
     --token "$RUNNER_TOKEN" \
