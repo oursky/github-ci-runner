@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 set -euxo pipefail
 
-KUBE_AGENT_VERSION=git-f946ad29d3
+KUBE_AGENT_VERSION=git-c9084cddb8
 RUNNER_VERSION=2.299.1
 
 curl -L https://github.com/oras-project/oras/releases/download/v0.13.0/oras_0.13.0_linux_amd64.tar.gz | \
