@@ -9,5 +9,6 @@ curl -L https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-
 /var/runner/tools/google-cloud-sdk/bin/gcloud components install gke-gcloud-auth-plugin
 
 cat <<EOF | sudo tee /etc/profile.d/20-gcloud.sh
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export PATH="\$PATH:/var/runner/tools/google-cloud-sdk/bin"
 EOF

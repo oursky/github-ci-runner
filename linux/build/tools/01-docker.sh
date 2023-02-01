@@ -6,7 +6,7 @@ COMPOSE_SWITCH_URL="https://github.com/docker/compose-switch/releases/download/$
 curl -L "$COMPOSE_SWITCH_URL" -o /var/runner/tools/bin/docker-compose
 chmod +x /var/runner/tools/bin/docker-compose
 
-KUBECTL_VERSION=$(curl -L -s "https://dl.k8s.io/release/stable.txt")
+KUBECTL_VERSION="v1.26.1"
 curl -o /var/runner/tools/bin/kubectl -L "https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl"
 chmod +x /var/runner/tools/bin/kubectl
 
