@@ -21,11 +21,10 @@ TCC_CLIENTS=(
 cp '/Library/Application Support/com.apple.TCC/TCC.db' '/Volumes/Macintosh HD/Library/Application Support/com.apple.TCC/TCC.db'
 for SERVICE in "${TCC_SERVICES[@]}"; do
     for CLIENT in "${TCC_CLIENTS[@]}"; do
-        chroot '/Volumes/Macintosh HD' \
-            sqlite3 '/Library/Application Support/com.apple.TCC/TCC.db' \
-            "INSERT OR IGNORE INTO access VALUES(
-                ${SERVICE}, ${CLIENT},
-                2,3,1,NULL,NULL,0,'UNUSED',NULL,0,1646381108
-            );"
+        '/Volumes/Macintosh HD/usr/bin/sqlite3' '/Volumes/Macintosh HD/Library/Application Support/com.apple.TCC/TCC.db' \
+        "INSERT OR IGNORE INTO access VALUES(
+            ${SERVICE}, ${CLIENT},
+            2,3,1,NULL,NULL,0,'UNUSED',NULL,0,1646381108
+        );"
     done
 done

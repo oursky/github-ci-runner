@@ -52,7 +52,7 @@ $(BUILD_ROOT)/volumes/xcodes.sparseimage: .build-root
 		-type SPARSE \
 		-size 10m \
 		"$(BUILD_ROOT)/volumes/xcodes"
-	hdiutil resize -size 100g "$(BUILD_ROOT)/volumes/xcodes.sparseimage"
+	hdiutil resize -size 200g "$(BUILD_ROOT)/volumes/xcodes.sparseimage"
 
 	hdiutil attach "$(BUILD_ROOT)/volumes/xcodes.sparseimage"
 	BUILD_ROOT="$(realpath $(BUILD_ROOT))" volumes/xcodes/extract.sh

@@ -8,10 +8,8 @@
 ## Preparation
 
 - Download from Developer Downloads:
-  - [Command Line Tools 13.4](https://download.developer.apple.com/Developer_Tools/Command_Line_Tools_for_Xcode_13.4/Command_Line_Tools_for_Xcode_13.4.dmg)
-    - extract as `macOS/volumes/setup/assets/CommandLineTools_13.4.pkg`
   - Xcode xips
-    - refer to `macOS/volumes/xcodes/xips/.gitignore` for required versions
+    - put xips in `macOS/build/xips`
 
 ## Build steps
 
@@ -24,11 +22,10 @@
   - Ensure Xcode xips are prepared as mentioned above
   - `jdupe` is used to optimize volume size, need much time
 5. Run `make runner` to make runner image
-  - Ensure Command Line Tools are prepared as mentioned above
 
 Or just `make vanilla base xcodes runner`
 
 ## Run VM Coordinator
 
-1. Prepare `runner-1.json` from `runner-template.json`
-2. Run `bin/coordinator -config runner-1.json`
+1. Prepare `coordinator.json` from `coordinator-template.json`
+2. Run `bin/coordinator -config coordinator.json`
