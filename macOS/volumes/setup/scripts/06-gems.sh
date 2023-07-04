@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-sudo gem install \
+gem install \
     cocoapods \
     bundler
 
