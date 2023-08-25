@@ -64,7 +64,7 @@ $(BUILD_ROOT)/volumes/xcodes.dmg: .build-root $(BUILD_ROOT)/volumes/xcodes.spars
 	hdiutil resize -sectors min $(BUILD_ROOT)/volumes/xcodes.sparseimage
 	hdiutil convert -ov -format UDRW -o $(BUILD_ROOT)/volumes/xcodes.dmg $(BUILD_ROOT)/volumes/xcodes.sparseimage
 
-RUNNER_VER?=2.307.1
+RUNNER_VER?=2.308.0
 
 .PHONY: $(BUILD_ROOT)/volumes/runner.dmg
 $(BUILD_ROOT)/volumes/runner.dmg: .build-root $(BUILD_ROOT)/assets/actions-runner
