@@ -9,5 +9,7 @@ fi
 
 cd "${0%/*}"
 mount -u -w '/Volumes/Macintosh HD'
-/usr/sbin/installer -pkg provisioner.pkg -target '/Volumes/Data'
+
+cp -r ./payload/ /Volumes/Data/
+./scripts/setup-tcc.sh
 shutdown -h now

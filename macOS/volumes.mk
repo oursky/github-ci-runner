@@ -1,23 +1,16 @@
 .PHONY: $(BUILD_ROOT)/volumes/provisioning.dmg
-$(BUILD_ROOT)/volumes/provisioning.dmg: .build-root $(BUILD_ROOT)/assets/provisioner.pkg
+$(BUILD_ROOT)/volumes/provisioning.dmg: .build-root
 	hdiutil create \
 		-ov \
 		-volname provisioning \
 		-layout GPTSPUD \
 		-fs APFS \
 		-format UDIF \
-		-srcfolder "$(BUILD_ROOT)/assets/provisioner.pkg" \
+		-srcfolder volumes/provisioning/payload \
+		-srcfolder volumes/provisioning/scripts \
 		-srcfolder volumes/provisioning/provision.sh \
 		-srcfolder volumes/provisioning/autorun.sh \
 		"$(BUILD_ROOT)/volumes/provisioning"
-
-.PHONY: $(BUILD_ROOT)/assets/provisioner.pkg
-$(BUILD_ROOT)/assets/provisioner.pkg: .build-root
-	pkgbuild \
-		--identifier com.oursky.provisioner \
-		--root "volumes/provisioning/payload" \
-		--scripts "volumes/provisioning/scripts" \
-		"$(BUILD_ROOT)/assets/provisioner.pkg"
 
 .PHONY: $(BUILD_ROOT)/volumes/setup.dmg
 $(BUILD_ROOT)/volumes/setup.dmg: .build-root
