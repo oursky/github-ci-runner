@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 KUBE_AGENT_VERSION=git-c9084cddb8
-RUNNER_VERSION=2.310.2
+RUNNER_VERSION=2.311.0
 
 curl -L https://github.com/oras-project/oras/releases/download/v0.13.0/oras_0.13.0_linux_amd64.tar.gz | \
     tar -xzC /tmp oras
