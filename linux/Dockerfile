@@ -62,6 +62,7 @@ RUN --mount=target=/build/script.sh,source=/build/system/packages/04-browsers.sh
 RUN --mount=target=/build/script.sh,source=/build/system/packages/05-zstd.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/packages/06-python.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/packages/07-nodejs.sh /build/script.sh
+RUN --mount=target=/build/script.sh,source=/build/system/packages/08-ruby.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/setup-runner.sh /build/script.sh
 RUN --mount=target=/build/script.sh,source=/build/system/cleanup.sh /build/script.sh
 COPY --chown=1000:1000 --link root/ /
