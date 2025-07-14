@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 apt-fast install \
-    moby-engine moby-cli moby-buildx moby-compose \
+    docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin \
     supervisor
 usermod -aG docker runner
 

@@ -1,9 +1,6 @@
 #!/usr/bin/bash
 set -euxo pipefail
 
-sed -i 's/http:\/\/archive\.ubuntu\.com\/ubuntu\//http:\/\/azure\.archive\.ubuntu\.com\/ubuntu\//g' /etc/apt/sources.list
-sed -i 's/http:\/\/[a-z][a-z]\.archive\.ubuntu\.com\/ubuntu\//http:\/\/azure\.archive\.ubuntu\.com\/ubuntu\//g' /etc/apt/sources.list
-
 echo "APT::Acquire::Retries \"10\";" > /etc/apt/apt.conf.d/80retries
 echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 echo "APT::Get::Never-Include-Phased-Updates \"1\";" > /etc/apt/apt.conf.d/99phased-updates
@@ -31,13 +28,15 @@ apt-fast install --no-install-recommends \
   ca-certificates \
   software-properties-common
 
-curl -O "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
-dpkg -i packages-microsoft-prod.deb
-curl -L https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-
 add-apt-repository universe
+
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 apt-fast update
 apt-fast dist-upgrade
