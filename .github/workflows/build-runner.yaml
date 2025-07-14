@@ -29,7 +29,7 @@ jobs:
       - name: Build Image
         run: |
           docker buildx create --name builder --use --driver docker-container
-          make -C linux build BUILDX_ARGS="--cache-from=type=gha --cache-to=type=gha,mode=max --load"
+          make -C linux build BUILDX_ARGS="--load"
 
       - name: Push Image
         if: ${{ github.event_name == 'push' }}
