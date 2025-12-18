@@ -22,5 +22,5 @@ helm plugin install https://github.com/databus23/helm-diff
 curl -o /var/runner/tools/bin/helmfile -L "https://github.com/roboll/helmfile/releases/download/v0.144.0/helmfile_linux_amd64"
 chmod +x /var/runner/tools/bin/helmfile
 
-curl -o /var/runner/tools/bin/docuum -L "https://github.com/stepchowfun/docuum/releases/download/v0.21.1/docuum-x86_64-unknown-linux-gnu"
+curl -o /var/runner/tools/bin/docuum -L "https://github.com/stepchowfun/docuum/releases/download/v0.26.0/docuum-x86_64-unknown-linux-gnu"
 chmod +x /var/runner/tools/bin/docuum
