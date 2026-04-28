@@ -12,6 +12,7 @@ brew install \
     "gnu-tar" \
     "jq" \
     "ruby" \
+    "sops" \
     "wget" \
     "zstd"
 
