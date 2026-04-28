@@ -30,6 +30,9 @@ RUN --mount=target=/build/script.sh,source=/build/tools/04-gcloud.sh /build/scri
 FROM tools-base AS tools-asdf
 RUN --mount=target=/build/script.sh,source=/build/tools/06-asdf.sh /build/script.sh
 
+FROM tools-base AS tools-sops
+RUN --mount=target=/build/script.sh,source=/build/tools/07-sops.sh /build/script.sh
+
 FROM tools-base AS tools-runner
 RUN --mount=target=/build/script.sh,source=/build/tools/99-runner.sh /build/script.sh
 
@@ -44,6 +47,8 @@ COPY --from=tools-gcloud --link /var/runner /var/runner
 COPY --from=tools-gcloud --link /etc/profile.d /etc/profile.d
 COPY --from=tools-asdf --link /var/runner /var/runner
 COPY --from=tools-asdf --link /etc/profile.d /etc/profile.d
+COPY --from=tools-sops --link /var/runner /var/runner
+COPY --from=tools-sops --link /etc/profile.d /etc/profile.d
 COPY --from=tools-runner --link /var/runner /var/runner
 COPY --from=tools-runner --link /etc/profile.d /etc/profile.d
 COPY --from=tools-runner --link /runner /runner
