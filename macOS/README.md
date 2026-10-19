@@ -2,20 +2,26 @@
 
 - macOS 12
 - aria2
+- jq
+- xcodes
 - jdupe
 - Apple Developer account
 
 ## Preparation
 
-- Download from Developer Downloads:
-  - Xcode xips
-    - put xips in `macOS/build/xips`
+- Run `make xips XCODE_VERSIONS="26 27"` to download Xcode xips to `macOS/build/xips`
+  - A prefix such as `26` or `26.6` selects the newest matching release, from https://xcodereleases.com
+  - `xcodes` asks for your Apple ID on first use
+  - Or download xips from Developer Downloads and put them in `macOS/build/xips` as `Xcode_<version>.xip`
 
 ## Build steps
 
 1. Run `make ipsw` to fetch IPSW
    - `aria2` is used to download IPSW
-   - If already have IPSW, skip it by putting it as `macOS/images/macOS.ipsw`
+   - By default, it fetches the newest IPSW that the host supports
+   - To fetch another version, set `MACOS_VERSION`, for example `make ipsw MACOS_VERSION=26`
+     - A prefix such as `26` or `26.6` selects the newest matching release, from https://ipsw.me/VirtualMac2,1
+   - If already have IPSW, skip it by putting it as `build/assets/macOS.ipsw`
 2. Run `make vanilla` to make vanilla image
 3. Run `make base` to make base image
 4. Run `make xcodes` to make Xcode volume
