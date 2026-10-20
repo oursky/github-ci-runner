@@ -13,7 +13,7 @@ XCODE_VERSIONS ?=
 
 .PHONY: help
 help:
-	@echo 'make [ipsw|vanilla|base|xips|xcodes|runner]'
+	@echo 'make [ipsw|vanilla|base|xips|xcodes|runner|archive]'
 
 .PHONY: ipsw
 ipsw: .build-root
@@ -46,6 +46,14 @@ runner: .build-root $(BUILD_ROOT)/volumes/setup.dmg $(BUILD_ROOT)/volumes/cache.
 	cp config/runner-setup.json $(BUILD_ROOT)/config/
 	bin/vmctl clone $(BUILD_ROOT)/instances/base.bundle $(BUILD_ROOT)/instances/runner.bundle
 	bin/vmctl start --config $(BUILD_ROOT)/config/runner-setup.json --bundle $(BUILD_ROOT)/instances/runner.bundle
+
+.PHONY: archive
+archive: .build-root
+	aa archive -d $(BUILD_ROOT) -o $(BUILD_ROOT)/runner-image.aar \
+		-include-path instances/runner.bundle \
+		-include-path volumes/xcodes.dmg \
+		-include-path volumes/runner.dmg \
+		-include-path volumes/cache.dmg
 
 .PHONY: xips
 xips: .build-root

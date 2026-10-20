@@ -31,6 +31,11 @@
 
 Or just `make vanilla base xcodes runner`
 
+## Share the runner image
+
+1. Run `make archive` to pack the deploy artifacts into `build/runner-image.aar`
+2. On the other host, run `aa extract -i runner-image.aar -d build` in `macOS/`
+
 ## Run VM Coordinator
 
 1. Prepare `coordinator.json` from `coordinator-template.json`
