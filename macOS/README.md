@@ -4,7 +4,7 @@
 - aria2
 - jq
 - xcodes
-- jdupe
+- jdupes
 - Apple Developer account
 
 ## Preparation
@@ -26,7 +26,7 @@
 3. Run `make base` to make base image
 4. Run `make xcodes` to make Xcode volume
   - Ensure Xcode xips are prepared as mentioned above
-  - `jdupe` is used to optimize volume size, need much time
+  - `jdupes` is used to optimize volume size, need much time
 5. Run `make runner` to make runner image
 
 Or just `make vanilla base xcodes runner`
