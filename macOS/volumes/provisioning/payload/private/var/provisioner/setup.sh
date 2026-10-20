@@ -12,3 +12,4 @@ for script in *.sh; do
 done
 
 sudo rm /Library/LaunchDaemons/com.oursky.provisioner.setup.plist
+sudo shutdown -r now
