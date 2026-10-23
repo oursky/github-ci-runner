@@ -1,4 +1,6 @@
 BUILD_ROOT ?= ./build
+MACOS_VERSION ?=
+XCODE_VERSIONS ?=
 
 .PHONY: .build-root
 .build-root:
@@ -11,11 +13,15 @@ BUILD_ROOT ?= ./build
 
 .PHONY: help
 help:
-	@echo 'make [ipsw|vanilla|base|runner]'
+	@echo 'make [ipsw|vanilla|base|xips|xcodes|runner|archive]'
 
 .PHONY: ipsw
 ipsw: .build-root
-	aria2c -x16 -s16 -o $(BUILD_ROOT)/assets/macOS.ipsw $$(bin/vmctl ipsw)
+	URL=$$(if test -z "$(MACOS_VERSION)"; then bin/vmctl ipsw; else \
+		curl -sSf 'https://api.ipsw.me/v4/device/VirtualMac2,1?type=ipsw' | \
+		jq -r --arg v "$(MACOS_VERSION)" \
+			'first(.firmwares[] | select(.version == $$v or (.version | startswith($$v + "."))) | .url) // error("no IPSW for macOS \($$v)")'; \
+	fi) && aria2c -x16 -s16 -o $(BUILD_ROOT)/assets/macOS.ipsw "$$URL"
 
 .PHONY: vanilla
 vanilla: .build-root $(BUILD_ROOT)/assets/macOS.ipsw
@@ -41,8 +47,20 @@ runner: .build-root $(BUILD_ROOT)/volumes/setup.dmg $(BUILD_ROOT)/volumes/cache.
 	bin/vmctl clone $(BUILD_ROOT)/instances/base.bundle $(BUILD_ROOT)/instances/runner.bundle
 	bin/vmctl start --config $(BUILD_ROOT)/config/runner-setup.json --bundle $(BUILD_ROOT)/instances/runner.bundle
 
+.PHONY: archive
+archive: .build-root
+	aa archive -d $(BUILD_ROOT) -o $(BUILD_ROOT)/runner-image.aar \
+		-include-path instances/runner.bundle \
+		-include-path volumes/xcodes.dmg \
+		-include-path volumes/runner.dmg \
+		-include-path volumes/cache.dmg
+
+.PHONY: xips
+xips: .build-root
+	BUILD_ROOT="$(realpath $(BUILD_ROOT))" volumes/xcodes/download.sh $(XCODE_VERSIONS)
+
 .PHONY: xcodes
-xcodes: .build-root $(BUILD_ROOT)/volumes/xcodes.dmg
+xcodes:.build-root $(BUILD_ROOT)/volumes/xcodes.dmg
 
 .PHONY: test-base
 test-base: .build-root

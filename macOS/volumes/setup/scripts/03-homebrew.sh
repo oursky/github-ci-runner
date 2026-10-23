@@ -2,6 +2,7 @@
 set -euxo pipefail
 
 export HOMEBREW_INSTALL_FROM_API=1
+export HOMEBREW_NO_ASK=1
 
 mkdir -p /Volumes/cache/Homebrew
 ln -s /Volumes/cache/Homebrew ~/Library/Caches/Homebrew
@@ -13,6 +14,7 @@ curl -L "${HOMEBREW_INSTALL_URL}" | NONINTERACTIVE=1 /bin/bash
 
 cat <<EOF | sudo tee -a ~/.profile
 export HOMEBREW_INSTALL_FROM_API=1
+export HOMEBREW_NO_ASK=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_INSTALL_CLEANUP=1
 export HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS=3650

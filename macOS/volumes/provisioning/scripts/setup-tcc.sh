@@ -18,13 +18,15 @@ TCC_CLIENTS=(
     "'/usr/libexec/sshd-keygen-wrapper',1"
 )
 
-cp '/Library/Application Support/com.apple.TCC/TCC.db' '/Volumes/Macintosh HD/Library/Application Support/com.apple.TCC/TCC.db'
+TCC_DB='/Volumes/Data/Library/Application Support/com.apple.TCC/TCC.db'
+
+mkdir -p "${TCC_DB%/*}"
+cp '/Library/Application Support/com.apple.TCC/TCC.db' "$TCC_DB"
 for SERVICE in "${TCC_SERVICES[@]}"; do
     for CLIENT in "${TCC_CLIENTS[@]}"; do
-        '/Volumes/Macintosh HD/usr/bin/sqlite3' '/Volumes/Macintosh HD/Library/Application Support/com.apple.TCC/TCC.db' \
-        "INSERT OR IGNORE INTO access VALUES(
-            ${SERVICE}, ${CLIENT},
-            2,3,1,NULL,NULL,0,'UNUSED',NULL,0,1646381108,NULL,NULL,NULL,NULL
-        );"
+        '/Volumes/Macintosh HD/usr/bin/sqlite3' "$TCC_DB" \
+        "INSERT OR REPLACE INTO access (
+            service, client, client_type, auth_value, auth_reason, auth_version, indirect_object_identifier_type, flags
+        ) VALUES(${SERVICE}, ${CLIENT}, 2, 3, 1, 0, 0);"
     done
 done
